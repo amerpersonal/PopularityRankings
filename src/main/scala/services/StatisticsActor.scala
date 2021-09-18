@@ -3,7 +3,7 @@ package services
 import java.io.InputStream
 
 import akka.actor.Actor
-import rankings.CollectionChainingRanker
+import rankings.{CollectionChainingRanker, SmartRecursionRanker}
 import services.StatisticsActor.GetStatisticsRecursion
 
 object StatisticsActor {
@@ -14,7 +14,7 @@ class StatisticsActor extends Actor  {
 
   override def receive = {
     case GetStatisticsRecursion(in: InputStream) => {
-      sender ! CollectionChainingRanker.calculate(in)
+      sender ! SmartRecursionRanker.calculate(in)
     }
   }
 

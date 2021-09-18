@@ -14,6 +14,8 @@ case class FormattedStatistics(
                               )
 
 object FormattedStatistics {
+  def empty(): FormattedStatistics = FormattedStatistics(0, 0, Seq.empty, Seq.empty, None, None)
+
   def fromStatistics(s: Statistics): FormattedStatistics = {
     val averageRatings = s.averageRatings()
     val productsByNumberOfRankings = s.productsByNumberOfRatings()

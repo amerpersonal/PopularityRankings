@@ -9,7 +9,7 @@ object CollectionChainingRanker extends Ranker {
   def loadRatings(in: java.io.InputStream): Seq[Try[Rating]] = {
     val source = Source.fromInputStream(in).getLines()
 
-    source.map(Rating(_)).toIterable.tail.toSeq
+    if (source.isEmpty) Seq.empty else source.map(Rating(_)).toIterable.tail.toSeq
   }
 
   override def calculateStatistics(in: java.io.InputStream): FormattedStatistics = {

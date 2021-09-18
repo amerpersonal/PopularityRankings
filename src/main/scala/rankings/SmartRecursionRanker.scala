@@ -36,7 +36,7 @@ object SmartRecursionRanker extends Ranker {
   override def calculateStatistics(in: java.io.InputStream): FormattedStatistics = {
     val source = Source.fromInputStream(in).getLines()
 
-    val columns = source.next()
+    val columns = if (source.hasNext) source.next() else ""
     FormattedStatistics.fromStatistic(loop(source, Statistic.empty))
   }
 }

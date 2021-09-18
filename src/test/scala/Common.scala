@@ -5,7 +5,7 @@ import org.scalatest.BeforeAndAfter
 import org.scalatest.flatspec.AnyFlatSpec
 import utils.Files
 
-trait Common extends AnyFlatSpec with BeforeAndAfter {
+trait Common {
   val filename = "test.csv"
 
   val ratings = Map(
@@ -28,10 +28,10 @@ trait Common extends AnyFlatSpec with BeforeAndAfter {
   val expectedResult = FormattedStatistics(ratings.values.map(_.size).sum, invalidCount, Seq("test-01", "test-02"), Seq("test-02", "test-01"), Some("test-01"), Some("test-02"))
 
 
-  after {
-    for {
-      file <- f
-      _ <- Files.removeFile(file)
-    } yield ()
-  }
+//  after {
+//    for {
+//      file <- f
+//      _ <- Files.removeFile(file)
+//    } yield ()
+//  }
 }

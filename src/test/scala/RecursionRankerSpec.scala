@@ -12,7 +12,7 @@ import scala.collection.immutable.HashMap
 import scala.collection.mutable
 import scala.util.Failure
 
-class RecursionRankerSpec extends Common with should.Matchers  {
+class RecursionRankerSpec extends AnyFlatSpec with Common with should.Matchers  {
 
   it should "calculate statistics correctly for empty Rating" in {
     SmartRecursionRanker.loop(Iterator.empty, Statistic.empty()) shouldEqual(Statistic.empty())
