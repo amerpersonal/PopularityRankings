@@ -69,25 +69,23 @@ Run `sbt test` task from SBT console or create test configuration inside favouri
 
 # Deployment
 
-To deploy the program or server, one should create Dockerfile and Jenkinsefile with appropriate build and run steps (check section 
-
-- [Breakdance](https://github.com/amerpersonal/PopularityRankings/blob/master/README.md#installing-and-running)
+To deploy the program or server, one should create Dockerfile and Jenkinsefile with appropriate build and run steps (check [Installing and running_section](https://github.com/amerpersonal/PopularityRankings/blob/master/README.md#installing-and-running)
 
 
 # Built With
 
-* Akka HTTP (http://doc.akka.io/docs/akka-http/current/scala/http/) - library for creating APIs in Scala using Akka stack
-* SBT (http://www.scala-sbt.org/) - Dependency Management
+* [Akka HTTP] (http://doc.akka.io/docs/akka-http/current/scala/http/) - library for creating APIs in Scala using Akka stack
+* [SBT] (http://www.scala-sbt.org/) - Dependency Management
 
 # Implementations and performances
 
 Currently there are 3 implementations of calculation running:
 
-- naive implementation that uses Scala collection chaining, without paying to much attention to performances (CollectionChainingRanker)
-- implementation using recursion (RecursionRanker)
-- implementation using fold (FoldRanker)
+- naive implementation that uses Scala collection chaining, without paying to much attention to performances ([CollectionChainingRanker](https://github.com/amerpersonal/PopularityRankings/blob/master/src/main/scala/rankings/CollectionChainingRanker.scala))
+- implementation using recursion ([RecursionRanker](https://github.com/amerpersonal/PopularityRankings/blob/master/src/main/scala/rankings/RecursionRanker.scala))
+- implementation using fold ([FoldRanker](https://github.com/amerpersonal/PopularityRankings/blob/master/src/main/scala/rankings/FoldRanker.scala))
 
-During first run in IntelliJ (caches clear), implementations showed the following perormance:
+During first run in IntelliJ (all caches clear), implementations showed the following perormance:
 
 ```
 Statistics calculated using collection chaining in 1098 ms: {"bestRatedProducts":["blu-ray-01","fixie-01","widetv-03"],"invalidLines":1,"lessRatedProduct":"saddle-01","mostRatedProduct":"wifi-projector-01","validLines":48,"worstRatedProducts":["endura-01","smarttv-01","patagonia-01"]}
@@ -129,7 +127,7 @@ Response body
 }
 ```
 
-For schema validation, we can use some online schema validator, such as https://www.liquid-technologies.com/online-json-schema-validator
+For schema validation, we can use some online schema validator, such as [this](https://www.liquid-technologies.com/online-json-schema-validator)
 
 # Status and further work
 
