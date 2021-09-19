@@ -69,13 +69,13 @@ Run `sbt test` task from SBT console or create test configuration inside favouri
 
 # Deployment
 
-To deploy the program or server, one should create Dockerfile and Jenkinsefile with appropriate build and run steps (check [Installing and running_section](https://github.com/amerpersonal/PopularityRankings/blob/master/README.md#installing-and-running)
+To deploy the program or server, one should create Dockerfile and Jenkinsefile with appropriate build and run steps (check [Installing and running_section](https://github.com/amerpersonal/PopularityRankings/blob/master/README.md#installing-and-running))
 
 
 # Built With
 
-* [Akka HTTP] (http://doc.akka.io/docs/akka-http/current/scala/http/) - library for creating APIs in Scala using Akka stack
-* [SBT] (http://www.scala-sbt.org/) - Dependency Management
+* [Akka HTTP](http://doc.akka.io/docs/akka-http/current/scala/http/) - library for creating APIs in Scala using Akka stack
+* [SBT](http://www.scala-sbt.org/) - Dependency Management
 
 # Implementations and performances
 
