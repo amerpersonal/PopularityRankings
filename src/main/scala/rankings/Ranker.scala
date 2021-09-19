@@ -4,6 +4,8 @@ import models.FormattedStatistics
 import spray.json._
 import serializers.FormattedStatisticsSerializer._
 
+import scala.io.Source
+
 /**
   * base interface for calculating rating product statistics
   */
@@ -29,18 +31,25 @@ trait Ranker {
                 ]
             }
     */
-  def calculate(in: java.io.InputStream): String = calculateStatistics(in).toJson.prettyPrint
+  def calculate(in: java.io.InputStream): String = {
+    val source = Source.fromInputStream(in).getLines()
 
-  def calculateStatistics(in: java.io.InputStream): FormattedStatistics
+    if (source.hasNext) source.next()
+
+    if (source.isEmpty) FormattedStatistics.empty().toJson.prettyPrint
+    else calculateStatistics(source).toJson.prettyPrint
+  }
+
+  def calculateStatistics(iterator: Iterator[String]): FormattedStatistics
 
   /** Calculates statistics while measuring execution time
     *
-    * @param in input stream of CSV file containing products with ratings
+    * @param iterator input stream of CSV file containing products with ratings
     * @return tuple containing execution time in milliseconds and calculated statistics
     */
-  def calculateAndMesaure(in: java.io.InputStream): (Long, FormattedStatistics) = {
+  def calculateAndMesaure(source: Iterator[String]): (Long, FormattedStatistics) = {
     val start = System.currentTimeMillis()
-    val output = calculateStatistics(in)
+    val output = calculateStatistics(source)
 
     (System.currentTimeMillis() - start, output)
   }

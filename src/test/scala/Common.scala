@@ -5,6 +5,8 @@ import org.scalatest.BeforeAndAfter
 import org.scalatest.flatspec.AnyFlatSpec
 import utils.Files
 
+import scala.io.Source
+
 trait Common {
   val filename = "test.csv"
 
@@ -24,6 +26,9 @@ trait Common {
   val f = Files.createFileWithLines(filename, Seq("buyer id, shop, product id, rating") ++ validLines ++ invalidLines)
 
   val in = f.map(new FileInputStream(_)).getOrElse(throw new RuntimeException("No test file created"))
+
+  val source = Source.fromInputStream(in).getLines()
+  if (source.hasNext) source.next()
 
   val expectedResult = FormattedStatistics(ratings.values.map(_.size).sum, invalidCount, Seq("test-01", "test-02"), Seq("test-02", "test-01"), Some("test-01"), Some("test-02"))
 

@@ -33,11 +33,7 @@ object RecursionRanker extends Ranker {
   }
 
 
-  override def calculateStatistics(in: java.io.InputStream): FormattedStatistics = {
-    val source = Source.fromInputStream(in).getLines()
-
-    if (source.hasNext) source.next()
-
+  override def calculateStatistics(source: Iterator[String]): FormattedStatistics = {
     FormattedStatistics.fromStatistic(loop(source, Statistic.empty))
   }
 }

@@ -50,7 +50,7 @@ class RecursionRankerSpec extends AnyFlatSpec with Common with should.Matchers  
   }
 
   it should "calculate formatted statistics correctly" in {
-    val actualResult = RecursionRanker.calculateStatistics(in)
+    val actualResult = RecursionRanker.calculateStatistics(source)
 
     actualResult shouldEqual (expectedResult)
   }

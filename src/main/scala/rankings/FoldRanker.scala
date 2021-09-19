@@ -5,8 +5,7 @@ import scala.io.Source
 import scala.util.{Failure, Success}
 
 object FoldRanker extends Ranker {
-  override def calculateStatistics(in: java.io.InputStream): FormattedStatistics = {
-    val source = Source.fromInputStream(in).getLines()
+  override def calculateStatistics(source: Iterator[String]): FormattedStatistics = {
     val statistic = source.foldLeft[Statistic](Statistic.empty)((acc, line) => {
 
       Rating(line) match {

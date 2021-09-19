@@ -8,15 +8,9 @@ import scala.util.{Success, Try}
   * Calculating statistics for products using naive, primitive approach - iterating through scala collection multiple times
   */
 object CollectionChainingRanker extends Ranker {
-  def loadRatings(in: java.io.InputStream): Seq[Try[Rating]] = {
-    val source = Source.fromInputStream(in).getLines()
 
-    if (source.isEmpty) Seq.empty else source.map(Rating(_)).toIterable.tail.toSeq
-  }
-
-  override def calculateStatistics(in: java.io.InputStream): FormattedStatistics = {
-    val loaded = loadRatings(in)
-    val (valid, invalid) = loaded.partition(_.isSuccess)
+  override def calculateStatistics(source: Iterator[String]): FormattedStatistics = {
+    val (valid, invalid) = source.map(Rating(_)).toIterable.toSeq.partition(_.isSuccess)
     val ratings = valid.map(_.get).groupBy(_.productId).mapValues(_.map(_.rating))
 
     val statsByAverage = ratings.toList.sortBy { case (product, ratings) =>
