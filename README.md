@@ -44,7 +44,7 @@ Another way of running locally is to import project in IntelliJ (or IDE or your 
 To do this follow the next procedure:
  * import project as SBT project
  * refresh project in SBT tool window to make all sbt dependencies available
- * create run configuration - `run` task of type Application with main class `com.swipestox.activity_feed.api.WebServer`
+ * create run configuration 
  * run project with created configuration
 
 ### Running with Docker
@@ -69,7 +69,7 @@ Run `sbt test` task from SBT console or create test configuration inside favouri
 
 # Deployment
 
-To deploy the program or server, one should create Dockerfile and Jenkinsefile with appropriate build and run steps (check section ##Installing and running)
+To deploy the program or server, one should create Dockerfile and Jenkinsefile with appropriate build and run steps (check section https://github.com/amerpersonal/PopularityRankings/blob/master/README.md#installing-and-running)
 
 # Built With
 
@@ -102,7 +102,7 @@ API contains only one route to make testing easier (through Postman or any other
 
 ```
 curl --location --request POST 'http://localhost:8080/api/v1/statistics' \
---form 'csv=@"/Users/amerzildzic/PopularityRankings/rankings.csv"'
+--form 'csv=@"<path to your CSV file>"'
 ```
 
 Response body
