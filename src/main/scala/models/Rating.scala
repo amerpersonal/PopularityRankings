@@ -22,9 +22,6 @@ case class Rating(buyerId: String, shopId: String, productId: String, rating: In
     rating < p.rating
   }
 
-  def isSameProduct(rating: Rating): Boolean = {
-    productId == rating.productId
-  }
 }
 
 object Rating {

@@ -1,15 +1,16 @@
 import java.io._
 
-import models.{Rating, Statistic, Statistics}
+import models.Rating
 import rankings._
-import utils.Validations
+import utils.{Files, Validations}
 
 import scala.collection.immutable.{SortedMap, SortedSet, TreeMap}
 import scala.io.Source
 import scala.util.{Failure, Success, Try}
 import scala.util.matching.Regex
+import Files._
 
-object Test {
+object Runner {
 
 
 
@@ -264,19 +265,15 @@ object Test {
   }
 
   def main(args: Array[String]): Unit = {
-    val f = new File("rankings.csv")
-    val in = new FileInputStream(f)
+    for {
+      filename <- args.headOption.orElse(throw new IOException("You must specify a file"))
+      _ <- if (filename.split("\\.").last == "csv") Some(Unit) else throw new IOException("You must specify a valid CSV file")
+      f <- Files.createFile(filename)
+      in <- f.createInputStream()
 
-    var start = System.currentTimeMillis()
-    val res = SmartRecursionRanker.calculateStatistics(in)
+      output = RecursionRanker.calculate(in)
 
-    println(s"Got statistics in ${System.currentTimeMillis() - start} ms: ${res}")
-
-    val f1 = new File("rank.csv")
-
-    val fw = new FileWriter(f1)
-    fw.close()
-
-    println(f1.exists())
+      _ = in.close()
+    } yield println(output)
   }
 }

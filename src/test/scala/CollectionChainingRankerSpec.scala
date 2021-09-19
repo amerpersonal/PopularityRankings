@@ -1,4 +1,3 @@
-import org.scalatest.BeforeAndAfter
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 import rankings.CollectionChainingRanker

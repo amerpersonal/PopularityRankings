@@ -1,33 +1,30 @@
 package rankings
 
-import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
-import models.{FormattedStatistics, Rating, Statistics}
-import spray.json._
-import serializers.FormattedStatisticsSerializer._
-
+import models._
 import scala.annotation.tailrec
 import scala.io.Source
 import scala.util.{Failure, Success}
 
 object RecursionRanker extends Ranker {
 
+  /** Recursively loops over iterator of product string representations without mutating data
+    *
+    * @param iterator - iterator of text, each element contains a string representation of product rating
+    * @param acc - accumulating data structure, containing data relevant to aggregating products
+    * @return - statistic data extracted from iterator
+    */
   @tailrec
-  def loop(iterator: Iterator[String], acc: Statistics): Statistics = {
+  def loop(iterator: Iterator[String], acc: Statistic): Statistic = {
     if (iterator.hasNext) {
-      Rating(iterator.next()) match {
+      val line = iterator.next()
+
+      Rating(line) match {
         case Success(Rating(_, _, productId, rating)) => {
 
-          val start = System.currentTimeMillis()
+          val currentReport = acc.productReports.getOrElse(productId, ProductReport())
+          val newReport = currentReport.copy(ratingSum = currentReport.ratingSum + rating, ratingCount = currentReport.ratingCount + 1)
 
-          val newProductRatings = rating :: acc.ratings.getOrElse(productId, List.empty[Int])
-          val average = newProductRatings.sum.toDouble / newProductRatings.size.toDouble
-          val newAverageMap = acc.averages.updated(productId, average)
-
-          val newTotalMap = acc.numberOfRanks.updated(productId, newProductRatings.size)
-
-          println(s"iteration takes ${System.currentTimeMillis() - start}")
-
-          loop(iterator, Statistics(acc.validLines + 1, acc.invalidLines, acc.ratings.updated(productId, newProductRatings), newAverageMap, newTotalMap))
+          loop(iterator, Statistic(acc.validLines + 1, acc.invalidLines, acc.productReports.updated(productId, newReport)))
         }
         case Failure(_) => loop(iterator, acc.copy(invalidLines = acc.invalidLines + 1))
       }
@@ -36,10 +33,11 @@ object RecursionRanker extends Ranker {
   }
 
 
-  def calculateStatistics(in: java.io.InputStream): FormattedStatistics = {
+  override def calculateStatistics(in: java.io.InputStream): FormattedStatistics = {
     val source = Source.fromInputStream(in).getLines()
 
-    FormattedStatistics.fromStatistics(loop(source, Statistics.empty()))
-  }
+    if (source.hasNext) source.next()
 
+    FormattedStatistics.fromStatistic(loop(source, Statistic.empty))
+  }
 }

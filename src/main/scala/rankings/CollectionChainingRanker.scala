@@ -1,10 +1,12 @@
 package rankings
 
-import models.{FormattedStatistics, Rating, Statistics}
-
+import models.{FormattedStatistics, Rating}
 import scala.io.Source
 import scala.util.{Success, Try}
 
+/**
+  * Calculating statistics for products using naive, primitive approach - iterating through scala collection multiple times
+  */
 object CollectionChainingRanker extends Ranker {
   def loadRatings(in: java.io.InputStream): Seq[Try[Rating]] = {
     val source = Source.fromInputStream(in).getLines()

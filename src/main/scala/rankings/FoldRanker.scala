@@ -1,44 +1,27 @@
 package rankings
 
-import models.{FormattedStatistics, Rating, Statistics}
-import rankings.RecursionRanker.loop
-
+import models._
 import scala.io.Source
 import scala.util.{Failure, Success}
 
 object FoldRanker extends Ranker {
-  override def calculate(in: java.io.InputStream): String = ???
-
-  def calculateStatistics(in: java.io.InputStream): FormattedStatistics = {
+  override def calculateStatistics(in: java.io.InputStream): FormattedStatistics = {
     val source = Source.fromInputStream(in).getLines()
+    val statistic = source.foldLeft[Statistic](Statistic.empty)((acc, line) => {
 
-    val start = System.currentTimeMillis()
-    val s = source.foldLeft[Statistics](Statistics.empty())((acc, next) => {
-      Rating(next) match {
+      Rating(line) match {
         case Success(Rating(_, _, productId, rating)) => {
-          val newProductRatings = rating :: acc.ratings.getOrElse(productId, List.empty[Int])
 
-          val average = newProductRatings.sum.toDouble / newProductRatings.size.toDouble
-          val newAverageMap = acc.averages.updated(productId, average)
+          val currentReport = acc.productReports.getOrElse(productId, ProductReport())
+          val newReport = currentReport.copy(ratingSum = currentReport.ratingSum + rating, ratingCount = currentReport.ratingCount + 1)
 
-          val newTotalMap = acc.numberOfRanks.updated(productId, newProductRatings.size)
-
-          Statistics(acc.validLines + 1, acc.invalidLines, acc.ratings.updated(productId, newProductRatings), newAverageMap, newTotalMap)
+          Statistic(acc.validLines + 1, acc.invalidLines, acc.productReports.updated(productId, newReport))
         }
         case Failure(_) => acc.copy(invalidLines = acc.invalidLines + 1)
       }
     })
 
-    println(s"calculation done in ${System.currentTimeMillis() - start} ms")
-
-    FormattedStatistics(
-      s.ratings.size,
-      s.invalidLines,
-      s.averageRatings().takeRight(3).map(_._1),
-      s.averageRatings().take(3).map(_._1),
-      s.productsByNumberOfRatings().lastOption.map(_._1),
-      s.productsByNumberOfRatings().headOption.map(_._1)
-    )
+    FormattedStatistics.fromStatistic(statistic)
 
   }
 }

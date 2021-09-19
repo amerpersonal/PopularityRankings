@@ -1,6 +1,6 @@
 package utils
 
-import java.io.{File, FileWriter}
+import java.io.{File, FileInputStream, FileWriter}
 
 import scala.util.Try
 
@@ -19,9 +19,13 @@ object Files {
   def createFile(filename: String) =  Try(new File(filename)).toOption
 
   implicit class FileOps(f: File) {
+    def check() = if (f.exists()) Some(f) else None
+
     def remove = if (f.delete()) Some(f) else None
 
     def createWriter() = Try(new FileWriter(f)).toOption
+
+    def createInputStream() = Try(new FileInputStream(f)).toOption
 
   }
 
