@@ -69,7 +69,10 @@ Run `sbt test` task from SBT console or create test configuration inside favouri
 
 # Deployment
 
-To deploy the program or server, one should create Dockerfile and Jenkinsefile with appropriate build and run steps (check section https://github.com/amerpersonal/PopularityRankings/blob/master/README.md#installing-and-running)
+To deploy the program or server, one should create Dockerfile and Jenkinsefile with appropriate build and run steps (check section 
+
+- [Breakdance](https://github.com/amerpersonal/PopularityRankings/blob/master/README.md#installing-and-running)
+
 
 # Built With
 
